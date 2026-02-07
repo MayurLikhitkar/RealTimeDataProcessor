@@ -9,7 +9,7 @@ const LOCAL_DB_URL = process.env.LOCAL_DB_URL as string;
 const PRODUCTION_DB_URL = process.env.PRODUCTION_DB_URL as string;
 const PRODUCTION_ENV = NODE_ENV === 'production';
 
-export const PORT = process.env.PORT as string;
+export const PORT = Number(process.env.PORT as string);
 export const RATE_LIMIT_WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS as string);
 export const RATE_LIMIT_MAX_REQUESTS = Number(process.env.RATE_LIMIT_MAX_REQUESTS as string);
 export const DATABASE_URL = PRODUCTION_ENV ? PRODUCTION_DB_URL : LOCAL_DB_URL;

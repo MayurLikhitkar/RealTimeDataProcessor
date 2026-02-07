@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import connectDB from './config/connectDB';
 import { PORT } from './config/envConfig';
-import { httpStatus } from './utils/constants';
+import { HttpStatus } from './utils/constants';
 import errorHandler from './middleware/errorHandler';
 import dataLogRoutes from './routes/dataLogRoutes';
 
@@ -32,7 +32,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use((req, res) => {
-    return res.status(httpStatus.NOT_FOUND).json({ message: 'Route not found', success: false });
+    return res.status(HttpStatus.NOT_FOUND).json({ message: 'Route not found', success: false });
 });
 
 app.use(errorHandler);

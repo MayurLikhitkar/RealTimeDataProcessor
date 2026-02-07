@@ -1,15 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
+import { RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS } from '../config/envConfig';
+import { HttpStatus } from '../utils/constants';
 
 interface ClientRecord {
     requestCount: number;
     startTime: number;
 }
 
-// In-memory store (Note: In a distributed system, use Redis)
+// In-memory store
 const rateLimitStore = new Map<string, ClientRecord>();
 
-const WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000;
-const MAX_REQUESTS = Number(process.env.RATE_LIMIT_MAX_REQUESTS) || 100;
+const WINDOW_MS = Number(RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000;
+const MAX_REQUESTS = Number(RATE_LIMIT_MAX_REQUESTS) || 100;
 
 export const customRateLimiter = (req: Request, res: Response, next: NextFunction) => {
     const ip = req.ip || req.socket.remoteAddress || 'unknown';
@@ -35,7 +37,7 @@ export const customRateLimiter = (req: Request, res: Response, next: NextFunctio
 
     // Within window, check limit
     if (record.requestCount >= MAX_REQUESTS) {
-        return res.status(429).json({
+        return res.status(HttpStatus.TOO_MANY_REQUESTS).json({
             success: false,
             message: 'Too many requests, please try again later.',
             retryAfter: Math.ceil((record.startTime + WINDOW_MS - currentTime) / 1000)

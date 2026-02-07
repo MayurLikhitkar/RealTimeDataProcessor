@@ -1,42 +1,50 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
+@import "tailwindcss";
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
+@theme {
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+    --color-background-light: #FFFFFF;
+    --color-background-main: #f7f7f7;
+    --color-background-dark: #E0E0E0;
+    --color-background-inverse: #000000;
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
+    --color-primary-light: #5CC0FF;
+    --color-primary-main: #2563EB;
+    --color-primary-dark: #0081D1;
 
-.card {
-  padding: 2em;
-}
+    --color-secondary-light: #EBF5FF;
+    --color-secondary-main: #F0F7FF;
+    --color-secondary-dark: #B8E4FF;
 
-.read-the-docs {
-  color: #888;
+    --color-border-light: #adb5bd;
+    --color-border-main: #6c757d;
+    --color-border-dark: #616161;
+
+    --color-text-light: #495057;
+    --color-text-main: #303030;
+    --color-text-dark: #000000;
+    --color-text-inverse: #ffffff;
+
+    --color-success-light: #34d399;
+    --color-success-main: #10b981;
+    --color-success-dark: #059669;
+
+    --color-error-main: #ef4444;
+    --color-error-light: #f87171;
+    --color-error-dark: #dc2626;
+
+    --color-warn-main: #ffc107;
+    --color-warn-light: #ffca2c;
+    --color-warn-dark: #e0a800;
+
+    --color-muted-light: #adb5bd;
+    --color-muted-main: #6c757d;
+    --color-muted-dark: #495057;
+
+    --color-accent-light: #FFFFFF;
+    --color-accent-main: #f7f7f7;
+    --color-accent-dark: #E0E0E0;
+
+    --color-dark-light: #495057;
+    --color-dark-main: #303030;
+    --color-dark-dark: #000000;
 }

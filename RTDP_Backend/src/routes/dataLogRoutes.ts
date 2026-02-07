@@ -1,9 +1,9 @@
-import express from 'express';
+import { Router } from 'express';
 import { customRateLimiter } from '../middleware/rateLimiter';
 import { getDataLogs, seedDataLogs } from '../controllers/dataLogController';
 import { asyncHandler } from '../utils/asyncHandler';
 
-const router = express.Router();
+const router = Router();
 
 // Rate Limiter
 router.use(customRateLimiter);
