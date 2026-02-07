@@ -5,19 +5,39 @@ import { FaSyncAlt, FaDatabase } from 'react-icons/fa';
 import type { LogResponse } from './types/types';
 import api from './utils/api';
 import DataLogs from './components/DataLogs';
+import { isAxiosError } from 'axios';
+import { useEffect } from 'react';
 
 function App() {
   const queryClient = useQueryClient();
 
   // 1. Polling for real-time data simulation (Every 5 minutes)
-  const { data, isLoading, isError } = useQuery<LogResponse>({
+  const { data, isLoading, isError, error } = useQuery<LogResponse>({
     queryKey: ['logs'],
     queryFn: async () => {
       const res = await api.get<LogResponse>('/dataLog');
+      if (!res.data.success) {
+        throw new Error(res.data.responseMessage || 'Failed to fetch logs');
+      }
       return res.data;
     },
-    refetchInterval: 1000 * 5,
+    refetchInterval: 1000 * 60 * 5,
   });
+
+  useEffect(() => {
+    if (data?.success && !isLoading) {
+      toast.success(data.responseMessage, { id: 'logs-success' });
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (isError && error) {
+      const message = isAxiosError(error)
+        ? error.response?.data?.responseMessage || error.message
+        : 'Failed to retrieve data logs';
+      toast.error(message, { id: 'logs-error' });
+    }
+  }, [isError, error]);
 
   // 2. Seeding Data Logs
   const seedMutation = useMutation({
@@ -26,7 +46,13 @@ function App() {
       toast.success('Database seeded with 5000+ records!');
       queryClient.invalidateQueries({ queryKey: ['logs'] });
     },
-    onError: () => toast.error('Failed to seed database'),
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data.responseMessage || 'Failed to seed database');
+        return;
+      }
+      toast.error('Failed to seed database')
+    }
   });
 
   return (
@@ -36,7 +62,7 @@ function App() {
       <main className="max-w-5xl mx-auto">
         <header className="mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-main to-primary-dark bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-linear-to-r from-primary-main to-primary-dark bg-clip-text text-transparent">
               Scalable Real-Time Data Processor
             </h1>
             <p className="text-muted-main mt-1">Data Monitoring Dashboard</p>

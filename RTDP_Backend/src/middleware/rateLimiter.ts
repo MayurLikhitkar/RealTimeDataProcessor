@@ -39,7 +39,7 @@ export const customRateLimiter = (req: Request, res: Response, next: NextFunctio
     if (record.requestCount >= MAX_REQUESTS) {
         return res.status(HttpStatus.TOO_MANY_REQUESTS).json({
             success: false,
-            message: 'Too many requests, please try again later.',
+            responseMessage: 'Too many requests, please try again later.',
             retryAfter: Math.ceil((record.startTime + WINDOW_MS - currentTime) / 1000)
         });
     }

@@ -1,3 +1,10 @@
+export interface ApiResponse {
+    success: boolean;
+    responseMessage: string;
+    errorMessage: string;
+    error: unknown;
+}
+
 export interface LogEntry {
     _id: string;
     timestamp: string;
@@ -6,8 +13,7 @@ export interface LogEntry {
     source: string;
 }
 
-export interface LogResponse {
-    success: boolean;
+export interface LogResponse extends ApiResponse {
     count: number;
     data: LogEntry[];
 }
